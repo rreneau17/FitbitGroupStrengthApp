@@ -1,5 +1,6 @@
 let document = require("document");
 import * as messaging from "messaging";
+import { inbox } from "file-transfer";
 
 setInterval(function () {
     console.log("Starter app running - Connectivity status=" + messaging.peerSocket.readyState + "Connected? " + (messaging.peerSocket.OPEN ? "YES" : "NO"));
@@ -36,6 +37,18 @@ messaging.peerSocket.onerror = function(err) {
   // Handle any errors
   console.log("Connection error: " + err.code + " - " + err.message);
 }
+
+// Event occurs when new file(s) are received
+inbox.onnewfile = function () {
+  var fileName;
+  do {
+    // If there is a file, move it from staging into the application folder
+    fileName = inbox.nextFile();
+    if (fileName) {
+      console.log("/private/data/" + fileName + " is now available");
+    }
+  } while (fileName);
+};
 
 
 

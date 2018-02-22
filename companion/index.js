@@ -1,20 +1,29 @@
 var messaging = require('messaging');
 import { url } from './config.js';
+import { outbox } from "file-transfer";
+
+let destFilename = "activeRtn.txt";
 
 function queryRoutine() {
   fetch(url)
   .then(function (response) {
-    response.json()
-    .then(function(data) {
-      var oneRoutine = data[0];
-      returnRoutine(oneRoutine);
+      // We need an arrayBuffer of the file contents
+      return response.arrayBuffer();
+    }).then(function (data) {
+        // Queue the file for transfer
+        outbox.enqueue(destFilename, data).then(function (ft) {
+        // Queued successfully
+        console.log("Transfer of '" + destFilename + "' successfully queued.");
+      }).catch(function (error) {
+         // Failed to queue
+        throw new Error("Failed to queue '" + destFilename + "'. Error: " + error);
+      });
+    }).catch(function (error) {
+      // Log the error
+      console.log("Failure: " + error);
     });
-  })
-  .catch(function (err) {
-    console.log("Error fetching posts: " + err);
-  });
 }
-
+  
 function addPost() {
     fetch(url, {
         method: "post",
