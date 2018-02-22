@@ -26,8 +26,8 @@ messaging.peerSocket.onopen = function () {
 // Listen for messages from the companion
 messaging.peerSocket.onmessage = function(evt) {
   if (evt.data) {
-    console.log(evt.data.title);
-    txtLabel.text = evt.data.title;
+    console.log(evt.data.reps);
+    txtLabel.text = evt.data.reps;
   }
 }
 
