@@ -1,6 +1,7 @@
 let document = require("document");
 import * as messaging from "messaging";
 import { inbox } from "file-transfer";
+import * as fs from "fs";
 
 setInterval(function () {
     console.log("Starter app running - Connectivity status=" + messaging.peerSocket.readyState + "Connected? " + (messaging.peerSocket.OPEN ? "YES" : "NO"));
@@ -38,17 +39,29 @@ messaging.peerSocket.onerror = function(err) {
   console.log("Connection error: " + err.code + " - " + err.message);
 }
 
+let statusText = document.getElementById("status");
+statusText.text = "Waiting...";
+
 // Event occurs when new file(s) are received
-inbox.onnewfile = function () {
-  var fileName;
+inbox.onnewfile = () => {
+  console.log("New file!");
+  let fileName;
   do {
     // If there is a file, move it from staging into the application folder
     fileName = inbox.nextFile();
     if (fileName) {
-      console.log("/private/data/" + fileName + " is now available");
+      console.log(`Received File: <${fileName}>`);
+      let rtnData = fs.readFileSync(fileName, "utf-8");
+      // statusText.text = `Received file`;
+      displayRtn(rtnData);
     }
-  } while (fileName);
+  } while (fileName);  
 };
+
+function displayRtn(rtnData) {
+    let rtnList = JSON.parse(rtnData);
+    console.log(rtnList[0].weight);
+  }
 
 
 

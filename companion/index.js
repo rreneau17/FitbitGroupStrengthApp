@@ -1,11 +1,9 @@
-var messaging = require('messaging');
-import { url } from './config.js';
 import { outbox } from "file-transfer";
 
 let destFilename = "activeRtn.txt";
 
 function queryRoutine() {
-  fetch(url)
+  fetch(url)     
   .then(function (response) {
       // We need an arrayBuffer of the file contents
       return response.arrayBuffer();
