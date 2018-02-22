@@ -1,13 +1,13 @@
 var messaging = require('messaging');
 import { url } from './config.js';
 
-function queryPosts() {
+function queryRoutine() {
   fetch(url)
   .then(function (response) {
     response.json()
     .then(function(data) {
-      var onePost = data[0];
-      returnPost(onePost);
+      var oneRoutine = data[0];
+      returnRoutine(oneRoutine);
     });
   })
   .catch(function (err) {
@@ -33,7 +33,7 @@ function addPost() {
 }
 
 // Send the post data to the device
-function returnPost(data) {
+function returnRoutine(data) {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     // Send a command to the device
     messaging.peerSocket.send(data);
@@ -55,10 +55,10 @@ messaging.peerSocket.onerror = function (err) {
 
 // Listen for messages from the device
 messaging.peerSocket.onmessage = function(evt) {
-  if (evt.data && evt.data.command == "getPosts") {
+  if (evt.data && evt.data.command == "getRoutine") {
     // The device requested weather data
     console.log('Companion received request!');
-    queryPosts();
-    addPost();
+    queryRoutine();
+    // addPost();
   }
 }

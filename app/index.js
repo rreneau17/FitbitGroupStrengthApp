@@ -8,18 +8,18 @@ setInterval(function () {
 // Fetch UI elements 
 let txtLabel = document.getElementById("myLabel");
 
-function fetchPosts() {
+function fetchRoutine() {
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
       // Send a command to the companion
       messaging.peerSocket.send({
-        command: 'getPosts'
+        command: 'getRoutine'
       });
     }
   }
 
 // Listen for onopen event
 messaging.peerSocket.onopen = function () {
-    fetchPosts();
+    fetchRoutine();
     // txtLabel.text = 'Hello World!'
 };
 
