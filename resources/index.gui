@@ -1,3 +1,16 @@
 <svg class="background">
+  <text id="exercise-list" />
   <text id="myLabel" />
+  <!-- BOTTOM RIGHT -->
+  <use id="btn-br" href="#combo-button-lower-right" fill="fb-peach">
+    <set href="combo-button-icon" attributeName="href" to="right_arrow.png"/>
+    <set href="combo-button-icon-press" attributeName="href" to="right_arrow.png"/>
+    <set href="combo-button-stroke" attributeName="display" to="inline"/>
+  </use>
+  <!-- BOTTOM LEFT -->
+  <use id="btn-bl" href="#combo-button-lower-left" fill="fb-peach">
+    <set href="combo-button-icon" attributeName="href" to="left_arrow.png"/>
+    <set href="combo-button-icon-press" attributeName="href" to="left_arrow.png"/>
+    <set href="combo-button-stroke" attributeName="display" to="inline"/>
+  </use>
 </svg>

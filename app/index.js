@@ -3,12 +3,13 @@ import * as messaging from "messaging";
 import { inbox } from "file-transfer";
 import * as fs from "fs";
 
-setInterval(function () {
-    console.log("Starter app running - Connectivity status=" + messaging.peerSocket.readyState + "Connected? " + (messaging.peerSocket.OPEN ? "YES" : "NO"));
-}, 3000);
+// provides information as to whether there is a connection with companion device
+//  setInterval(function () {
+//    console.log("Starter app running - Connectivity status=" + messaging.peerSocket.readyState + "Connected? " + (messaging.peerSocket.OPEN ? "YES" : "NO"));
+//  }, 3000);
 
 // Fetch UI elements 
-let txtLabel = document.getElementById("myLabel");
+let exerciseDisp = document.getElementById("exercise-list");
 
 function fetchRoutine() {
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
@@ -28,8 +29,8 @@ messaging.peerSocket.onopen = function () {
 // Listen for messages from the companion
 messaging.peerSocket.onmessage = function(evt) {
   if (evt.data) {
-    console.log(evt.data.reps);
-    txtLabel.text = evt.data.reps;
+    console.log('Recieved message from companion');
+    // txtLabel.text = evt.data.reps;
   }
 }
 
@@ -39,8 +40,7 @@ messaging.peerSocket.onerror = function(err) {
   console.log("Connection error: " + err.code + " - " + err.message);
 }
 
-let statusText = document.getElementById("status");
-statusText.text = "Waiting...";
+
 
 // Event occurs when new file(s) are received
 inbox.onnewfile = () => {
@@ -59,9 +59,36 @@ inbox.onnewfile = () => {
 };
 
 function displayRtn(rtnData) {
-    let rtnList = JSON.parse(rtnData);
-    console.log(rtnList[0].weight);
-  }
+    let i = 0;
+    let rtnList = JSON.parse(rtnData); 
+    let exerciseList = document.getElementById("exercise-list");
+    exerciseList.text = rtnList.exercises[i].exerciseName;
+    let btnBR = document.getElementById("btn-br");
+    let btnBL = document.getElementById("btn-bl"); 
+  
+    btnBR.onactivate = function(evt) {
+      console.log('Bottom Right!')
+      i++;
+      if(i < rtnList.exercises.length) {
+        exerciseList.text = rtnList.exercises[i].exerciseName;
+      } else {
+        exerciseList.text = "End of List";
+      }
+    }
+    
+    btnBL.onactivate = function(evt) {
+      console.log('Bottom Left!')
+      i--;
+      if(i < rtnList.exercises.length && i >= 0) {
+        exerciseList.text = rtnList.exercises[i].exerciseName;
+      } else {
+        exerciseList.text = "End of List";
+      }
+    }   
+}
+
+
+
 
 
 
