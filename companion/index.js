@@ -1,3 +1,5 @@
+var messaging = require('messaging');
+import { url } from './config.js';
 import { outbox } from "file-transfer";
 
 let destFilename = "activeRtn.txt";
@@ -22,7 +24,7 @@ function queryRoutine() {
     });
 }
   
-function addPost() {
+function addWorkout() {
     fetch(url, {
         method: "post",
         headers: {
@@ -30,8 +32,14 @@ function addPost() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            title: "Fourth post from watch",
-            content: "Yay!"
+            date: "2018-02-20",
+            routineId: 1,
+            actuals: [{
+                setNum: 1,
+                actualReps: 20,
+                actualWgt: "bw",
+                exerciseId: 1
+            }]
         })
     })
     .then( (response) => { 
@@ -39,7 +47,7 @@ function addPost() {
     });
 }
 
-// Send the post data to the device
+// Sends the routine data to the device via message
 function returnRoutine(data) {
   if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
     // Send a command to the device
@@ -49,13 +57,17 @@ function returnRoutine(data) {
   }
 }
 
-setInterval(function () {
-    console.log("Starter app running - Connectivity status=" + messaging.peerSocket.readyState + "Connected? " + (messaging.peerSocket.OPEN ? "YES" : "NO"));
-}, 3000);
+// provides information as to whether there is a connection with app
+// setInterval(function () {
+//    console.log("Starter app running - Connectivity status=" + messaging.peerSocket.readyState + "Connected? " + (messaging.peerSocket.OPEN ? "YES" : "NO"));
+//  }, 3000);
 
+// Listen for onopen event
 messaging.peerSocket.onopen = function () {
     console.log("Companion socket is open.")
 };
+
+// Listen for onerror event
 messaging.peerSocket.onerror = function (err) {
     console.log("Connection error: " + err.code + " - " + err.message);
 };
@@ -65,7 +77,7 @@ messaging.peerSocket.onmessage = function(evt) {
   if (evt.data && evt.data.command == "getRoutine") {
     // The device requested weather data
     console.log('Companion received request!');
-    queryRoutine();
-    // addPost();
+    addWorkout();
+    // queryRoutine();
   }
 }

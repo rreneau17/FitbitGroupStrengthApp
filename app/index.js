@@ -64,7 +64,8 @@ function displayRtn(rtnData) {
     let exerciseList = document.getElementById("exercise-list");
     exerciseList.text = rtnList.exercises[i].exerciseName;
     let btnBR = document.getElementById("btn-br");
-    let btnBL = document.getElementById("btn-bl"); 
+    let btnBL = document.getElementById("btn-bl");
+    let btnTR = document.getElementById("btn-tr")
   
     btnBR.onactivate = function(evt) {
       console.log('Bottom Right!')
@@ -84,7 +85,13 @@ function displayRtn(rtnData) {
       } else {
         exerciseList.text = "End of List";
       }
-    }   
+    }
+    
+    btnTR.onactivate = function(evt) {
+      console.log('Top Right!');
+    }
+}
+
 }
 
 
