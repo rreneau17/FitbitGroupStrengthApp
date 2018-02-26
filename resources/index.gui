@@ -1,6 +1,6 @@
 <svg class="background">
   <text id="exercise-list" />
-  <text id="myLabel" />
+  <text id="reps-goal" />
   <!-- TOP RIGHT -->
   <use id="btn-tr" href="#combo-button-upper-right" fill="fb-red">
     <set href="combo-button-icon" attributeName="href" to="check_flag.png"/>
@@ -15,5 +15,9 @@
   <use id="btn-bl" href="#combo-button-lower-left" fill="fb-peach">
     <set href="combo-button-icon" attributeName="href" to="left_arrow.png"/>
     <set href="combo-button-icon-press" attributeName="href" to="left_arrow.png"/>
+  </use>
+  <!-- MINUS -->
+  <use id="btn-minus" href="#square-button-icon" x="5" y="5" fill="white">
+    <set href="#text"  attributeName="text-buffer" to=" - " />
   </use>
 </svg>

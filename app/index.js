@@ -62,10 +62,13 @@ function displayRtn(rtnData) {
     let i = 0;
     let rtnList = JSON.parse(rtnData); 
     let exerciseList = document.getElementById("exercise-list");
+    let repsGoal = document.getElementById("reps-goal");
     exerciseList.text = rtnList.exercises[i].exerciseName;
+    repsGoal.text = rtnList.exercises[i].reps;
     let btnBR = document.getElementById("btn-br");
     let btnBL = document.getElementById("btn-bl");
-    let btnTR = document.getElementById("btn-tr")
+    let btnTR = document.getElementById("btn-tr");
+    let btnMinus = document.getElementById("btn-minus");
   
     btnBR.onactivate = function(evt) {
       console.log('Bottom Right!')
@@ -90,9 +93,14 @@ function displayRtn(rtnData) {
     btnTR.onactivate = function(evt) {
       console.log('Top Right!');
     }
+    
+    btnMinus.onactivate = function(evt) {
+      console.log('Minus!');
+    } 
 }
 
-}
+
+
 
 
 

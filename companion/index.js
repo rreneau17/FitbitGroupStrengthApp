@@ -77,7 +77,7 @@ messaging.peerSocket.onmessage = function(evt) {
   if (evt.data && evt.data.command == "getRoutine") {
     // The device requested weather data
     console.log('Companion received request!');
-    addWorkout();
-    // queryRoutine();
+    // addWorkout();
+    queryRoutine();
   }
 }
