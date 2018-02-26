@@ -3,21 +3,20 @@
 }
 
 #exercise-list {
-  font-size: 35;
+  font-size: 40;
   font-family: System-Bold;
-  text-length: 32;
-  text-anchor: middle;
-  x: 50%;
-  y: 50%-30;
+  text-length: 15;
+  x: 25;
+  y: 45;
   fill: red;
 }
 
 #reps-goal {
-  font-size: 30;
+  font-size: 35;
   font-family: System-Bold;
   text-anchor: middle;
   x: 50%;
-  y: 50% + 20;
+  y: 50%+20;
   fill: white;
 }
 

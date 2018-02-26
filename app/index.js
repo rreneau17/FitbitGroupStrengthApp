@@ -69,6 +69,7 @@ function displayRtn(rtnData) {
     let btnBL = document.getElementById("btn-bl");
     let btnTR = document.getElementById("btn-tr");
     let btnMinus = document.getElementById("btn-minus");
+    let btnPlus = document.getElementById("btn-plus");
   
     btnBR.onactivate = function(evt) {
       console.log('Bottom Right!')
@@ -95,9 +96,14 @@ function displayRtn(rtnData) {
     }
     
     btnMinus.onactivate = function(evt) {
-      console.log('Minus!');
-    } 
+      console.log("Minus!")
+    }
+    
+    btnPlus.onactivate = function(evt) {
+      console.log("Plus!")
+    }
 }
+
 
 
 
