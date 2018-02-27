@@ -7,7 +7,7 @@
   font-family: System-Bold;
   text-length: 15;
   x: 25;
-  y: 45;
+  y: 35;
   fill: red;
 }
 
@@ -16,7 +16,44 @@
   font-family: System-Bold;
   text-anchor: middle;
   x: 50%;
-  y: 50%+20;
+  y: 90;
+  fill: white;
+}
+
+#wgt-goal {
+  font-size: 35;
+  font-family: System-Bold;
+  text-anchor: middle;
+  x: 50%;
+  y: 175;
+  fill: white;
+}
+ 
+#wgt-lable {
+  font-size: 28;
+  font-family: System-Bold;
+  text-anchor: middle;
+  x: 40;
+  y: 175;
+  fill: white;
+}
+
+#reps-lable {
+  font-size: 28;
+  font-family: System-Bold;
+  text-anchor: middle;
+  x: 40;
+  y: 90;
+  fill: white;
+}
+
+#sets-lable {
+  font-size: 28;
+  font-family: System-Regular;
+  text-anchor: middle;
+  text-length: 10;
+  x: 50%;
+  y: 225;
   fill: white;
 }
 

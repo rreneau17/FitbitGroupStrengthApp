@@ -77,15 +77,25 @@ function displayRtn(rtnData) {
     // display text items
     let exerciseList = document.getElementById("exercise-list");
     let repsGoal = document.getElementById("reps-goal");
-    exerciseList.text = actualsObj.exercises[actualsObj.index].exerciseName;
-    repsGoal.text = actualsObj.exercises[actualsObj.index].reps;
+    let wgtGoal = document.getElementById("wgt-goal");
+    let repLbl = document.getElementById("reps-lable");
+    let wgtLbl = document.getElementById("wgt-lable");
+    let setsLbl = document.getElementById("sets-lable");
+    exerciseList.text = actualsObj.actuals[actualsObj.index].exerciseName;
+    repsGoal.text = actualsObj.actuals[actualsObj.index].actualReps;
+    wgtGoal.text = actualsObj.actuals[actualsObj.index].actualWgt;
+    repLbl.text = "rp:";
+    wgtLbl.text = "wt:";
+    setsLbl.text = actualsObj.actuals[actualsObj.index].setNum + " / " + actualsObj.actuals[actualsObj.index].sets;
 
     // button variables
     let btnBR = document.getElementById("btn-br");
     let btnBL = document.getElementById("btn-bl");
     let btnTR = document.getElementById("btn-tr");
-    let btnMinus = document.getElementById("btn-minus");
-    let btnPlus = document.getElementById("btn-plus");
+    let btnRepMinus = document.getElementById("btn-rep-minus");
+    let btnRepPlus = document.getElementById("btn-rep-plus");
+    let btnWgtMinus = document.getElementById("btn-wgt-minus");
+    let btnWgtPlus = document.getElementById("btn-wgt-plus");
   
     // listens for bottom right button press 
     btnBR.onactivate = function(evt) {
@@ -103,14 +113,14 @@ function displayRtn(rtnData) {
     }
     
     // minus button - subtracts 1 from reps goal
-    btnMinus.onactivate = function(evt) {
+    btnRepMinus.onactivate = function(evt) {
       console.log("Minus!")
       
       
     }
     
     // plus button - add 1 to reps goal
-    btnPlus.onactivate = function(evt) {
+    btnRepPlus.onactivate = function(evt) {
       addReps(actualsObj);
     }
 }
@@ -120,19 +130,23 @@ function initActuals(actualsObj) {
   let k = 0;
   for(var i = 0; i < actualsObj.exercises.length; i++) {
     for(var n=1; n <= actualsObj.exercises[i].sets; n++) {
-        console.log(k);
-        actualsObj.actuals[k] = {};
+        actualsObj.actuals[k] = {
+          exerciseName: actualsObj.exercises[i].exerciseName,
+          setNum: n,
+          sets: actualsObj.exercises[i].sets,
+          actualReps: actualsObj.exercises[i].reps,
+          actualWgt: actualsObj.exercises[i].weight
+        };
         k++;
     }
   }
 }
 
 // moves forward to next exercise 
-function nextExercise(actualsObj, exerciseList, repsGoal) {
-    console.log('Bottom Right!')
-    actualsObj.index++;
-    if(actualsObj.index < actualsObj.exercises.length) {
-      exerciseList.text = actualsObj.exercises[actualsObj.index].exerciseName;
+function nextExercise(actualsObj) {
+    console.log('Bottom Right!')    
+    if(actualsObj.index < actualsObj.actuals.length) {
+      actualsObj.index++;
     } else {
       exerciseList.text = "End of List";
     }
@@ -142,8 +156,8 @@ function nextExercise(actualsObj, exerciseList, repsGoal) {
 function prevExercise(actualsObj, exerciseList, repsGoal) {
     console.log('Bottom Left!')
     actualsObj.index--;
-    if(actualsObj.index < actualsObj.exercises.length && actualsObj.index >= 0) {
-      exerciseList.text = actualsObj.exercises[actualsObj.index].exerciseName
+    if(actualsObj.index < actualsObj.actuals.length && actualsObj.index >= 0) {
+      exerciseList.text = actualsObj.actuals[actualsObj.index].exerciseName;
     } else {
       exerciseList.text = "End of List";
     }
@@ -158,6 +172,8 @@ function addReps(actualsObj, repsGoal) {
     actualsObj.actuals[actualsObj.index].actualReps++;
     repsGoal.text = actualsObj.actuals[actualsObj.index].actualReps;
 }
+
+
 
 
 

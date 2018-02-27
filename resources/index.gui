@@ -1,6 +1,10 @@
 <svg class="background">
   <text id="exercise-list" />
   <text id="reps-goal" />
+  <text id="wgt-goal" />
+  <text id="wgt-lable" />
+  <text id="reps-lable" />
+  <text id="sets-lable" />
   <!-- TOP RIGHT -->
   <use id="btn-tr" href="#combo-button-upper-right" fill="fb-red">
     <set href="combo-button-icon" attributeName="href" to="check_flag.png"/>
@@ -16,15 +20,29 @@
     <set href="combo-button-icon" attributeName="href" to="left_arrow.png"/>
     <set href="combo-button-icon-press" attributeName="href" to="left_arrow.png"/>
   </use>
-  <!-- MINUS -->
-  <use id="btn-minus" href="#push-button" y="105" x="65" height="60" width="60" fill="fb-white" font-family="System-Bold" font-size="89">
+  <!-- REP MINUS -->
+  <use id="btn-rep-minus" href="#push-button" y="55" x="75" height="50" width="50" fill="fb-white" font-family="System-Bold" font-size="80">
     <set href="#text" attributeName="text-buffer" to="-" />
     <set href="#text" attributeName="fill" to="fb-black" />
     <set href="#text" attributeName="y" to="20" />
     <set href="#text" attributeName="x" to="0" />
   </use>
-  <!-- PLUS -->
-  <use id="btn-plus" href="#push-button" y="105" x="230" height="60" width="60" fill="fb-white" font-family="System-Bold" font-size="89">
+  <!-- REP PLUS -->
+  <use id="btn-rep-plus" href="#push-button" y="55" x="220" height="50" width="50" fill="fb-white" font-family="System-Bold" font-size="80">
+    <set href="#text" attributeName="text-buffer" to="+" />
+    <set href="#text" attributeName="fill" to="fb-black" />
+    <set href="#text" attributeName="y" to="20" />
+    <set href="#text" attributeName="x" to="0" />
+  </use>
+  <!-- WEIGHT MINUS -->
+  <use id="btn-wgt-minus" href="#push-button" y="140" x="75" height="50" width="50" fill="fb-white" font-family="System-Bold" font-size="80">
+    <set href="#text" attributeName="text-buffer" to="-" />
+    <set href="#text" attributeName="fill" to="fb-black" />
+    <set href="#text" attributeName="y" to="20" />
+    <set href="#text" attributeName="x" to="0" />
+  </use>
+  <!-- WEIGHT PLUS -->
+  <use id="btn-wgt-plus" href="#push-button" y="140" x="220" height="50" width="50" fill="fb-white" font-family="System-Bold" font-size="80">
     <set href="#text" attributeName="text-buffer" to="+" />
     <set href="#text" attributeName="fill" to="fb-black" />
     <set href="#text" attributeName="y" to="20" />
