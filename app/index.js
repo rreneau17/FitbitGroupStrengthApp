@@ -58,47 +58,65 @@ inbox.onnewfile = () => {
   } while (fileName);  
 };
 
+
 function displayRtn(rtnData) {
-    let i = 0;
-    let rtnList = JSON.parse(rtnData); 
+
+    let rtnList = JSON.parse(rtnData);
+
+    // object holding routine data, current index, date, and actuals
+    let actualsObj = ({
+      ...rtnList,
+      date: new Date(),
+      index: 0,
+      actuals: []
+    })
+
+    // display text items
     let exerciseList = document.getElementById("exercise-list");
     let repsGoal = document.getElementById("reps-goal");
-    exerciseList.text = rtnList.exercises[i].exerciseName;
-    repsGoal.text = rtnList.exercises[i].reps;
+    exerciseList.text = actualsObj.exercises[actualsObj.index].exerciseName;
+    repsGoal.text = actualsObj.exercises[actualsObj.index].reps;
+
+    // button variables
     let btnBR = document.getElementById("btn-br");
     let btnBL = document.getElementById("btn-bl");
     let btnTR = document.getElementById("btn-tr");
     let btnMinus = document.getElementById("btn-minus");
     let btnPlus = document.getElementById("btn-plus");
   
+    // bottom right button - moves forward to next exercises
     btnBR.onactivate = function(evt) {
       console.log('Bottom Right!')
-      i++;
-      if(i < rtnList.exercises.length) {
-        exerciseList.text = rtnList.exercises[i].exerciseName;
+      actualsObj.index++;
+      if(actualsObj.index < actualsObj.exercises.length) {
+        exerciseList.text = actualsObj.exercises[actualsObj.index].exerciseName;
       } else {
         exerciseList.text = "End of List";
       }
     }
     
+    // bottom left button - moves backward to previous exercise
     btnBL.onactivate = function(evt) {
       console.log('Bottom Left!')
-      i--;
-      if(i < rtnList.exercises.length && i >= 0) {
-        exerciseList.text = rtnList.exercises[i].exerciseName;
+      actualsObj.index--;
+      if(actualsObj.index < actualsObj.exercises.length && actualsObj.index >= 0) {
+        exerciseList.text = actualsObj.exercises[actualsObj.index].exerciseName;
       } else {
         exerciseList.text = "End of List";
       }
     }
     
+    // top right button - submits actuals data and exits program
     btnTR.onactivate = function(evt) {
       console.log('Top Right!');
     }
     
+    // minus button - subtracts 1 from reps goal
     btnMinus.onactivate = function(evt) {
       console.log("Minus!")
     }
     
+    // plus button - add 1 to reps goal
     btnPlus.onactivate = function(evt) {
       console.log("Plus!")
     }
