@@ -68,8 +68,11 @@ function displayRtn(rtnData) {
       ...rtnList,
       date: new Date(),
       index: 0,
-      actuals: []
+      actuals: [{}]
     })
+    
+    // intialize actuals array
+    initActuals(actualsObj);
 
     // display text items
     let exerciseList = document.getElementById("exercise-list");
@@ -84,26 +87,14 @@ function displayRtn(rtnData) {
     let btnMinus = document.getElementById("btn-minus");
     let btnPlus = document.getElementById("btn-plus");
   
-    // bottom right button - moves forward to next exercises
+    // listens for bottom right button press 
     btnBR.onactivate = function(evt) {
-      console.log('Bottom Right!')
-      actualsObj.index++;
-      if(actualsObj.index < actualsObj.exercises.length) {
-        exerciseList.text = actualsObj.exercises[actualsObj.index].exerciseName;
-      } else {
-        exerciseList.text = "End of List";
-      }
+      nextExercise(actualsObj, exerciseList, repsGoal);
     }
     
     // bottom left button - moves backward to previous exercise
     btnBL.onactivate = function(evt) {
-      console.log('Bottom Left!')
-      actualsObj.index--;
-      if(actualsObj.index < actualsObj.exercises.length && actualsObj.index >= 0) {
-        exerciseList.text = actualsObj.exercises[actualsObj.index].exerciseName;
-      } else {
-        exerciseList.text = "End of List";
-      }
+      prevExercise(actualsObj, exerciseList, repsGoal);
     }
     
     // top right button - submits actuals data and exits program
@@ -114,13 +105,61 @@ function displayRtn(rtnData) {
     // minus button - subtracts 1 from reps goal
     btnMinus.onactivate = function(evt) {
       console.log("Minus!")
+      
+      
     }
     
     // plus button - add 1 to reps goal
     btnPlus.onactivate = function(evt) {
-      console.log("Plus!")
+      addReps(actualsObj);
     }
 }
+
+// intializes actuals array 
+function initActuals(actualsObj) {
+  let k = 0;
+  for(var i = 0; i < actualsObj.exercises.length; i++) {
+    for(var n=1; n <= actualsObj.exercises[i].sets; n++) {
+        console.log(k);
+        actualsObj.actuals[k] = {};
+        k++;
+    }
+  }
+}
+
+// moves forward to next exercise 
+function nextExercise(actualsObj, exerciseList, repsGoal) {
+    console.log('Bottom Right!')
+    actualsObj.index++;
+    if(actualsObj.index < actualsObj.exercises.length) {
+      exerciseList.text = actualsObj.exercises[actualsObj.index].exerciseName;
+    } else {
+      exerciseList.text = "End of List";
+    }
+}
+
+// moves backward to previous exercise
+function prevExercise(actualsObj, exerciseList, repsGoal) {
+    console.log('Bottom Left!')
+    actualsObj.index--;
+    if(actualsObj.index < actualsObj.exercises.length && actualsObj.index >= 0) {
+      exerciseList.text = actualsObj.exercises[actualsObj.index].exerciseName
+    } else {
+      exerciseList.text = "End of List";
+    }
+}
+
+function addReps(actualsObj, repsGoal) {
+    console.log("Plus!")
+    let repsGoal = document.getElementById("reps-goal");
+    if (actualsObj.actuals[actualsObj.index].actualReps == null) {
+     actualsObj.actuals[actualsObj.index].actualReps = actualsObj.exercises[actualsObj.index].reps;
+    } 
+    actualsObj.actuals[actualsObj.index].actualReps++;
+    repsGoal.text = actualsObj.actuals[actualsObj.index].actualReps;
+}
+
+
 
 
 
