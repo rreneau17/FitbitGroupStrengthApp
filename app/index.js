@@ -2,6 +2,7 @@ let document = require("document");
 import * as messaging from "messaging";
 import { inbox } from "file-transfer";
 import * as fs from "fs";
+import { me } from "appbit";
 
 // provides information as to whether there is a connection with companion device
 //  setInterval(function () {
@@ -10,6 +11,9 @@ import * as fs from "fs";
 
 // Fetch UI elements 
 let exerciseDisp = document.getElementById("exercise-list");
+
+hideActuals();
+hideCancel();
 
 function fetchRoutine() {
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
@@ -73,7 +77,9 @@ function displayRtn(rtnData) {
     
     // intialize actuals array
     initActuals(actualsObj);  
-
+    
+    showActuals();
+  
     // button variables
     let btnBR = document.getElementById("btn-br");
     let btnBL = document.getElementById("btn-bl");
@@ -82,10 +88,12 @@ function displayRtn(rtnData) {
     let btnRepPlus = document.getElementById("btn-rep-plus");
     let btnWgtMinus = document.getElementById("btn-wgt-minus");
     let btnWgtPlus = document.getElementById("btn-wgt-plus");
-    let btnNo = document.getElementById("btn-no");
+    let btnCancel = document.getElementById("btn-cancel");
+    let btnEnd = document.getElementById("btn-end");
     
     // hide exit question buttons 
-    btnNo.style.display = "none";
+    btnCancel.style.display = "none";
+    btnEnd.style.display = "none";
   
     displayItems(actualsObj);
   
@@ -103,7 +111,8 @@ function displayRtn(rtnData) {
     btnTR.onactivate = function(evt) {
       console.log('Top Right!');
       hideActuals();
-      btnNo.style.display = "inline";
+      btnCancel.style.display = "inline";
+      btnEnd.style.display = "inline";
     }
     
     // minus button - subtracts 1 from reps goal
@@ -126,9 +135,14 @@ function displayRtn(rtnData) {
       addWgt(actualsObj);
     }
     
-    btnNo.onactivate = function(evt) {
+    btnCancel.onactivate = function(evt) {
       showActuals();
-      btnNo.style.display = "none";
+      hideCancel();
+    }
+    
+    btnEnd.onactivate = function(evt) {
+      console.log('Ending Program');
+      me.exit();
     }
 }
 
@@ -151,12 +165,12 @@ function initActuals(actualsObj) {
 
 // moves forward to next exercise 
 function nextExercise(actualsObj) {
-    console.log('Bottom Right!')    
+    let exerciseList = document.getElementById("exercise-list");
     if(actualsObj.index < actualsObj.actuals.length) {
       actualsObj.index++;
       displayItems(actualsObj);
     } else {
-      console.log("End of List")
+      exerciseList.text = "End of Session";
     }
 }
 
@@ -166,9 +180,7 @@ function prevExercise(actualsObj) {
     if(actualsObj.index < actualsObj.actuals.length && actualsObj.index >= 0) {
       actualsObj.index--;
       displayItems(actualsObj);
-    } else {
-      console.log("End of List");
-    }
+    } 
 }
 
 function addReps(actualsObj) {
@@ -244,6 +256,13 @@ function hideActuals() {
     btnWgtPlus.style.display = "none";
 }
 
+function hideCancel() {
+    let btnCancel = document.getElementById("btn-cancel");
+    let btnEnd = document.getElementById("btn-end");
+    btnCancel.style.display = "none";
+    btnEnd.style.display = "none";
+}
+
 function showActuals() {
     let exerciseList = document.getElementById("exercise-list");
     let repsGoal = document.getElementById("reps-goal");
@@ -272,6 +291,7 @@ function showActuals() {
     btnWgtMinus.style.display = "inline";
     btnWgtPlus.style.display = "inline";
 }
+
 
 
 
