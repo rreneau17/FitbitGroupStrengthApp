@@ -82,6 +82,10 @@ function displayRtn(rtnData) {
     let btnRepPlus = document.getElementById("btn-rep-plus");
     let btnWgtMinus = document.getElementById("btn-wgt-minus");
     let btnWgtPlus = document.getElementById("btn-wgt-plus");
+    let btnNo = document.getElementById("btn-no");
+    
+    // hide exit question buttons 
+    btnNo.style.display = "none";
   
     displayItems(actualsObj);
   
@@ -98,6 +102,8 @@ function displayRtn(rtnData) {
     // top right button - submits actuals data and exits program
     btnTR.onactivate = function(evt) {
       console.log('Top Right!');
+      hideActuals();
+      btnNo.style.display = "inline";
     }
     
     // minus button - subtracts 1 from reps goal
@@ -112,14 +118,17 @@ function displayRtn(rtnData) {
     
     // subtract 1 from weight goal
     btnWgtMinus.onactivate = function(evt) {
-      subtractWgt(actualsObj);
-      
-        
+      subtractWgt(actualsObj);        
     }
     
     // add 1 to weight goal
     btnWgtPlus.onactivate = function(evt) {
       addWgt(actualsObj);
+    }
+    
+    btnNo.onactivate = function(evt) {
+      showActuals();
+      btnNo.style.display = "none";
     }
 }
 
@@ -204,6 +213,64 @@ function displayItems(actualsObj) {
     repLbl.text = "rp:";
     wgtLbl.text = "wt:";
     setsLbl.text = actualsObj.actuals[actualsObj.index].setNum + " / " + actualsObj.actuals[actualsObj.index].sets;
+}
+
+function hideActuals() {
+    let exerciseList = document.getElementById("exercise-list");
+    let repsGoal = document.getElementById("reps-goal");
+    let wgtGoal = document.getElementById("wgt-goal");
+    let repLbl = document.getElementById("reps-label");
+    let wgtLbl = document.getElementById("wgt-label");
+    let setsLbl = document.getElementById("sets-label");
+    let btnBR = document.getElementById("btn-br");
+    let btnBL = document.getElementById("btn-bl");
+    let btnTR = document.getElementById("btn-tr");
+    let btnRepMinus = document.getElementById("btn-rep-minus");
+    let btnRepPlus = document.getElementById("btn-rep-plus");
+    let btnWgtMinus = document.getElementById("btn-wgt-minus");
+    let btnWgtPlus = document.getElementById("btn-wgt-plus");
+    exerciseList.style.display = "none";
+    repsGoal.style.display = "none";
+    wgtGoal.style.display = "none";
+    repLbl.style.display = "none";
+    wgtLbl.style.display = "none";
+    setsLbl.style.display = "none";
+    btnBR.style.display = "none";
+    btnBL.style.display = "none";
+    btnTR.style.display = "none";
+    btnRepMinus.style.display = "none";
+    btnRepPlus.style.display = "none";
+    btnWgtMinus.style.display = "none";
+    btnWgtPlus.style.display = "none";
+}
+
+function showActuals() {
+    let exerciseList = document.getElementById("exercise-list");
+    let repsGoal = document.getElementById("reps-goal");
+    let wgtGoal = document.getElementById("wgt-goal");
+    let repLbl = document.getElementById("reps-label");
+    let wgtLbl = document.getElementById("wgt-label");
+    let setsLbl = document.getElementById("sets-label");
+    let btnBR = document.getElementById("btn-br");
+    let btnBL = document.getElementById("btn-bl");
+    let btnTR = document.getElementById("btn-tr");
+    let btnRepMinus = document.getElementById("btn-rep-minus");
+    let btnRepPlus = document.getElementById("btn-rep-plus");
+    let btnWgtMinus = document.getElementById("btn-wgt-minus");
+    let btnWgtPlus = document.getElementById("btn-wgt-plus");
+    exerciseList.style.display = "inline";
+    repsGoal.style.display = "inline";
+    wgtGoal.style.display = "inline";
+    repLbl.style.display = "inline";
+    wgtLbl.style.display = "inline";
+    setsLbl.style.display = "inline";
+    btnBR.style.display = "inline";
+    btnBL.style.display = "inline";
+    btnTR.style.display = "inline";
+    btnRepMinus.style.display = "inline";
+    btnRepPlus.style.display = "inline";
+    btnWgtMinus.style.display = "inline";
+    btnWgtPlus.style.display = "inline";
 }
 
 

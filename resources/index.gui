@@ -48,4 +48,7 @@
     <set href="#text" attributeName="y" to="20" />
     <set href="#text" attributeName="x" to="0" />
   </use>
+  <use id="btn-no" href="#square-button" y="5" fill="fb-red">
+    <set href="#text" attributeName="text-buffer" to="NO" />
+  </use>
 </svg>
