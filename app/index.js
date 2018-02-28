@@ -72,21 +72,7 @@ function displayRtn(rtnData) {
     })
     
     // intialize actuals array
-    initActuals(actualsObj);
-
-    // display text items
-    let exerciseList = document.getElementById("exercise-list");
-    let repsGoal = document.getElementById("reps-goal");
-    let wgtGoal = document.getElementById("wgt-goal");
-    let repLbl = document.getElementById("reps-lable");
-    let wgtLbl = document.getElementById("wgt-lable");
-    let setsLbl = document.getElementById("sets-lable");
-    exerciseList.text = actualsObj.actuals[actualsObj.index].exerciseName;
-    repsGoal.text = actualsObj.actuals[actualsObj.index].actualReps;
-    wgtGoal.text = actualsObj.actuals[actualsObj.index].actualWgt;
-    repLbl.text = "rp:";
-    wgtLbl.text = "wt:";
-    setsLbl.text = actualsObj.actuals[actualsObj.index].setNum + " / " + actualsObj.actuals[actualsObj.index].sets;
+    initActuals(actualsObj);  
 
     // button variables
     let btnBR = document.getElementById("btn-br");
@@ -97,14 +83,16 @@ function displayRtn(rtnData) {
     let btnWgtMinus = document.getElementById("btn-wgt-minus");
     let btnWgtPlus = document.getElementById("btn-wgt-plus");
   
+    displayItems(actualsObj);
+  
     // listens for bottom right button press 
     btnBR.onactivate = function(evt) {
-      nextExercise(actualsObj, exerciseList, repsGoal);
+      nextExercise(actualsObj);
     }
     
     // bottom left button - moves backward to previous exercise
     btnBL.onactivate = function(evt) {
-      prevExercise(actualsObj, exerciseList, repsGoal);
+      prevExercise(actualsObj);
     }
     
     // top right button - submits actuals data and exits program
@@ -114,14 +102,24 @@ function displayRtn(rtnData) {
     
     // minus button - subtracts 1 from reps goal
     btnRepMinus.onactivate = function(evt) {
-      console.log("Minus!")
-      
-      
+      subtractReps(actualsObj);  
     }
     
     // plus button - add 1 to reps goal
     btnRepPlus.onactivate = function(evt) {
       addReps(actualsObj);
+    }
+    
+    // subtract 1 from weight goal
+    btnWgtMinus.onactivate = function(evt) {
+      subtractWgt(actualsObj);
+      
+        
+    }
+    
+    // add 1 to weight goal
+    btnWgtPlus.onactivate = function(evt) {
+      addWgt(actualsObj);
     }
 }
 
@@ -147,30 +145,65 @@ function nextExercise(actualsObj) {
     console.log('Bottom Right!')    
     if(actualsObj.index < actualsObj.actuals.length) {
       actualsObj.index++;
+      displayItems(actualsObj);
     } else {
-      exerciseList.text = "End of List";
+      console.log("End of List")
     }
 }
 
 // moves backward to previous exercise
-function prevExercise(actualsObj, exerciseList, repsGoal) {
-    console.log('Bottom Left!')
-    actualsObj.index--;
+function prevExercise(actualsObj) {
+    console.log('Bottom Left!') 
     if(actualsObj.index < actualsObj.actuals.length && actualsObj.index >= 0) {
-      exerciseList.text = actualsObj.actuals[actualsObj.index].exerciseName;
+      actualsObj.index--;
+      displayItems(actualsObj);
     } else {
-      exerciseList.text = "End of List";
+      console.log("End of List");
     }
 }
 
-function addReps(actualsObj, repsGoal) {
-    console.log("Plus!")
-    let repsGoal = document.getElementById("reps-goal");
-    if (actualsObj.actuals[actualsObj.index].actualReps == null) {
-     actualsObj.actuals[actualsObj.index].actualReps = actualsObj.exercises[actualsObj.index].reps;
-    } 
+function addReps(actualsObj) {
+    console.log("Plus Reps!");
     actualsObj.actuals[actualsObj.index].actualReps++;
+    displayItems(actualsObj);
+}
+
+function subtractReps(actualsObj) {
+    console.log("Minus Reps");
+    if(actualsObj.actuals[actualsObj.index].actualReps > 0) {
+      actualsObj.actuals[actualsObj.index].actualReps--;
+    }
+    displayItems(actualsObj);
+}
+
+function addWgt(actualsObj) {
+    console.log("Plus Wgt!");
+    actualsObj.actuals[actualsObj.index].actualWgt++;
+    displayItems(actualsObj);
+}
+
+function subtractWgt(actualsObj) {
+    console.log("Minus Wgt")
+    if(actualsObj.actuals[actualsObj.index].actualWgt > 0) {
+      actualsObj.actuals[actualsObj.index].actualWgt--;
+    }
+    displayItems(actualsObj);
+}
+
+function displayItems(actualsObj) {
+    // display text items
+    let exerciseList = document.getElementById("exercise-list");
+    let repsGoal = document.getElementById("reps-goal");
+    let wgtGoal = document.getElementById("wgt-goal");
+    let repLbl = document.getElementById("reps-label");
+    let wgtLbl = document.getElementById("wgt-label");
+    let setsLbl = document.getElementById("sets-label");
+    exerciseList.text = actualsObj.actuals[actualsObj.index].exerciseName;
     repsGoal.text = actualsObj.actuals[actualsObj.index].actualReps;
+    wgtGoal.text = actualsObj.actuals[actualsObj.index].actualWgt;
+    repLbl.text = "rp:";
+    wgtLbl.text = "wt:";
+    setsLbl.text = actualsObj.actuals[actualsObj.index].setNum + " / " + actualsObj.actuals[actualsObj.index].sets;
 }
 
 

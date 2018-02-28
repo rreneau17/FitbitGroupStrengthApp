@@ -29,7 +29,7 @@
   fill: white;
 }
  
-#wgt-lable {
+#wgt-label {
   font-size: 28;
   font-family: System-Bold;
   text-anchor: middle;
@@ -38,7 +38,7 @@
   fill: white;
 }
 
-#reps-lable {
+#reps-label {
   font-size: 28;
   font-family: System-Bold;
   text-anchor: middle;
@@ -47,7 +47,7 @@
   fill: white;
 }
 
-#sets-lable {
+#sets-label {
   font-size: 28;
   font-family: System-Regular;
   text-anchor: middle;
@@ -56,5 +56,6 @@
   y: 225;
   fill: white;
 }
+
 
 

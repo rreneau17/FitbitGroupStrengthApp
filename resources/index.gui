@@ -2,9 +2,9 @@
   <text id="exercise-list" />
   <text id="reps-goal" />
   <text id="wgt-goal" />
-  <text id="wgt-lable" />
-  <text id="reps-lable" />
-  <text id="sets-lable" />
+  <text id="wgt-label" />
+  <text id="reps-label" />
+  <text id="sets-label" />
   <!-- TOP RIGHT -->
   <use id="btn-tr" href="#combo-button-upper-right" fill="fb-red">
     <set href="combo-button-icon" attributeName="href" to="check_flag.png"/>
