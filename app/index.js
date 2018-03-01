@@ -11,6 +11,7 @@ import { me } from "appbit";
 
 // Fetch UI elements 
 let exerciseDisp = document.getElementById("exercise-list");
+let counter = 0;
 
 hideActuals();
 hideCancel();
@@ -142,29 +143,41 @@ function displayRtn(rtnData) {
     }
     
     btnEnd.onactivate = function(evt) {
-      let actualsData = JSON.stringify(actualsObj);
-      console.log('sending actuals to companion')
-      console.log(actualsData.length);
-      console.log(Object.keys(actualsObj));
-      for(var i = 0; i < actualsData.length; i += 1024) {
-        console.log('sending an actuals file...');
-        let actualsStr = actualsData.substring(i, i + 1024);
-        console.log(actualsStr);
-        if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-        // Send the data to peer as a message
-        messaging.peerSocket.send(actualsStr);
-        }
-      }
-      if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-      // Send a command to the companion
-        messaging.peerSocket.send({
-          command: 'sendActuals'
-        });
+      
+      submitActuals(actualsObj);
+
+      // Listen for the onbufferedamountdecrease event
+      messaging.peerSocket.onbufferedamountdecrease = function() {
+      // Amount of buffered data has decreased, continue sending data
+        submitActuals(actualsObj);
+        console.log('Buffer decrease listener');
       }
       // me.exit();
     }
 }
 
+function submitActuals(actualsObj) {
+  let actualsData = JSON.stringify(actualsObj);
+  if (messaging.peerSocket.bufferedAmount < 512) {
+    // Send data only while the buffer contains less than 128 bytes 
+    if (counter < actualsData.length) {
+      let actualsStr = actualsData.substring(counter, counter + 512);
+      if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+        counter += 512;
+        messaging.peerSocket.send(actualsStr);
+        console.log('sending file: ' + counter);
+      } 
+    } else {
+      if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+        // Send a command to the companion
+          messaging.peerSocket.send({
+            command: 'sendActuals'
+          });
+          messaging.peerSocket.onbufferedamountdecrease = undefined;
+      }
+    }
+  }  
+}
 
 
 // intializes actuals array 

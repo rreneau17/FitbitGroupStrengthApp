@@ -2,6 +2,15 @@
   viewport-fill: black;
 }
 
+#troubleshooting {
+  font-size: 30;
+  font-family: System-Bold;
+  text-length: 100;
+  x: 25;
+  y: 35;
+  fill: white;
+}
+
 #exercise-list {
   font-size: 40;
   font-family: System-Bold;

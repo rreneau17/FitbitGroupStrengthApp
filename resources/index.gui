@@ -1,5 +1,6 @@
 <svg class="background">
   <text id="exercise-list" />
+  <text id="troubleshooting" />
   <text id="reps-goal" />
   <text id="wgt-goal" />
   <text id="wgt-label" />
