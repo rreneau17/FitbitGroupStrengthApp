@@ -70,6 +70,7 @@ function displayRtn(rtnData) {
     // object holding routine data, current index, date, and actuals
     let actualsObj = ({
       ...rtnList,
+      routineId: rtnList.routineId,
       date: new Date(),
       index: 0,
       actuals: [{}]
@@ -141,10 +142,30 @@ function displayRtn(rtnData) {
     }
     
     btnEnd.onactivate = function(evt) {
-      console.log('Ending Program');
-      me.exit();
+      let actualsData = JSON.stringify(actualsObj);
+      console.log('sending actuals to companion')
+      console.log(actualsData.length);
+      console.log(Object.keys(actualsObj));
+      for(var i = 0; i < actualsData.length; i += 1024) {
+        console.log('sending an actuals file...');
+        let actualsStr = actualsData.substring(i, i + 1024);
+        console.log(actualsStr);
+        if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+        // Send the data to peer as a message
+        messaging.peerSocket.send(actualsStr);
+        }
+      }
+      if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+      // Send a command to the companion
+        messaging.peerSocket.send({
+          command: 'sendActuals'
+        });
+      }
+      // me.exit();
     }
 }
+
+
 
 // intializes actuals array 
 function initActuals(actualsObj) {
@@ -156,7 +177,8 @@ function initActuals(actualsObj) {
           setNum: n,
           sets: actualsObj.exercises[i].sets,
           actualReps: actualsObj.exercises[i].reps,
-          actualWgt: actualsObj.exercises[i].weight
+          actualWgt: actualsObj.exercises[i].weight,
+          exerciseId: actualsObj.exercises[i].exerciseId 
         };
         k++;
     }
@@ -291,6 +313,8 @@ function showActuals() {
     btnWgtMinus.style.display = "inline";
     btnWgtPlus.style.display = "inline";
 }
+
+
 
 
 

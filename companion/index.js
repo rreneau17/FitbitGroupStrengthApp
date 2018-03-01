@@ -24,7 +24,8 @@ function queryRoutine() {
     });
 }
   
-function addWorkout() {
+function addWorkout(actualsData) {
+    console.log('posting data...');
     fetch(url, {
         method: "post",
         headers: {
@@ -32,18 +33,27 @@ function addWorkout() {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify({
-            date: "2018-02-20",
+            date: new Date(),
             routineId: 1,
-            actuals: [{
+            actuals: [
+              {
                 setNum: 1,
                 actualReps: 20,
-                actualWgt: "bw",
+                actualWgt: 150,
                 exerciseId: 1
-            }]
+              },
+              {
+                setNum: 2,
+                actualReps: 20,
+                actualWgt: 150,
+                exerciseId: 1
+              }
+            ]
         })
     })
     .then( (response) => { 
-        console.log('Posted items.')
+        console.log('Posted items.');
+        console.log(JSON.stringify(response));
     });
 }
 
@@ -74,10 +84,18 @@ messaging.peerSocket.onerror = function (err) {
 
 // Listen for messages from the device
 messaging.peerSocket.onmessage = function(evt) {
+  let actualsData ='';
   if (evt.data && evt.data.command == "getRoutine") {
-    // The device requested weather data
-    console.log('Companion received request!');
-    // addWorkout();
+    // The device requested routine data
+    console.log('Companion received request for routine data!');
     queryRoutine();
+  } else {
+    // addWorkout(evt.data);
+    actualsData += evt.data;
+  }
+  if (evt.data && evt.data.command == "sendActuals") {
+    // The device requested to submit actuals
+    console.log('Companion received submit request!');
+    // addWorkout(actualsData);
   }
 }
