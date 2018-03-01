@@ -33,10 +33,15 @@ function addWorkout(actualsData) {
             'Content-Type': 'application/json'
         },
         body: actualsData
-    })
+    }) 
     .then( (response) => { 
         console.log('Posted items.');
-        console.log(JSON.stringify(response));
+        if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
+        // Send a command to the app
+          messaging.peerSocket.send({
+            command: 'exitProg'
+          });
+        }
     });
 }
 
@@ -73,7 +78,7 @@ messaging.peerSocket.onmessage = function(evt) {
     console.log('Companion received request for routine data!');
     queryRoutine();
   } else {
-    console.log("data " + evt.data)
+    // console.log("data " + evt.data);
     actualsData += evt.data;
   }
   if (evt.data && evt.data.command == "sendActuals") {

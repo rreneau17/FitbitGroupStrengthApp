@@ -23,7 +23,7 @@ function fetchRoutine() {
         command: 'getRoutine'
       });
     }
-  }
+}
 
 // Listen for onopen event
 messaging.peerSocket.onopen = function () {
@@ -33,9 +33,9 @@ messaging.peerSocket.onopen = function () {
 
 // Listen for messages from the companion
 messaging.peerSocket.onmessage = function(evt) {
-  if (evt.data) {
-    console.log('Recieved message from companion');
-    // txtLabel.text = evt.data.reps;
+  if (evt.data && evt.data.command == "exitProg") {
+    console.log('Companion received request to exit program!');
+    me.exit();
   }
 }
 
@@ -152,7 +152,6 @@ function displayRtn(rtnData) {
         submitActuals(actualsObj);
         console.log('Buffer decrease listener');
       }
-      // me.exit();
     }
 }
 
@@ -162,6 +161,7 @@ function submitActuals(actualsObj) {
     // Send data only while the buffer contains less than 128 bytes 
     if (counter < actualsData.length) {
       let actualsStr = actualsData.substring(counter, counter + 512);
+      console.log("data " + actualsStr);
       if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
         counter += 512;
         messaging.peerSocket.send(actualsStr);
@@ -326,6 +326,7 @@ function showActuals() {
     btnWgtMinus.style.display = "inline";
     btnWgtPlus.style.display = "inline";
 }
+
 
 
 
