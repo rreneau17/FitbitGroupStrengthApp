@@ -4,3 +4,7 @@ The Group Strength device app is custom developed on the Fitbit platform for the
 ![](/readme_images/versa_gs_exp.png?raw=true)
 <br><br>
 A demo walking through the basic functionality of the app is available at the following link: https://youtu.be/L0UGntUkFcQ
+### Technologies Used
+* Javascript
+* Scalable Vector Graphics
+* CSS
