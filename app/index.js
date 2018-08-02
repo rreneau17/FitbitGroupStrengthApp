@@ -1,3 +1,5 @@
+// index.js - this program executes on the Fitbit
+
 let document = require("document");
 import * as messaging from "messaging";
 import { inbox } from "file-transfer";
@@ -31,10 +33,13 @@ messaging.peerSocket.onopen = function () {
     // txtLabel.text = 'Hello World!'
 };
 
-// Listen for messages from the companion
+// Listen for message from the companion (mobile phone) that workout was posted
 messaging.peerSocket.onmessage = function(evt) {
   if (evt.data && evt.data.command == "exitProg") {
     console.log('Companion received request to exit program!');
+    let exerciseList = document.getElementById("exercise-list");
+    exerciseList.style.display = "inline";
+    exerciseList.text = "data posted!"; 
     me.exit();
   }
 }
@@ -47,7 +52,7 @@ messaging.peerSocket.onerror = function(err) {
 
 
 
-// Event occurs when new file(s) are received
+// Event occurs when new routine file(s) are received
 inbox.onnewfile = () => {
   console.log("New file!");
   let fileName;
@@ -71,6 +76,7 @@ function displayRtn(rtnData) {
     // object holding routine data, current index, date, and actuals
     let actualsObj = ({
       ...rtnList,
+      userId: rtnList.userId,
       routineId: rtnList.routineId,
       date: new Date(),
       index: 0,
@@ -92,10 +98,14 @@ function displayRtn(rtnData) {
     let btnWgtPlus = document.getElementById("btn-wgt-plus");
     let btnCancel = document.getElementById("btn-cancel");
     let btnEnd = document.getElementById("btn-end");
+    let postMsg = document.getElementById("post-msg");
+    let postMsg2 = document.getElementById("post-msg2");
     
-    // hide exit question buttons 
+    // hide exit question buttons and message
     btnCancel.style.display = "none";
     btnEnd.style.display = "none";
+    postMsg.style.display = "none";
+    postMsg2.style.display = "none";
   
     displayItems(actualsObj);
   
@@ -115,6 +125,11 @@ function displayRtn(rtnData) {
       hideActuals();
       btnCancel.style.display = "inline";
       btnEnd.style.display = "inline";
+      // need to refactor the text to textarea in the future
+      postMsg.style.display = "inline";
+      postMsg.text = "Do you want to post";
+      postMsg2.style.display = "inline";
+      postMsg2.text = "this workout?";
     }
     
     // minus button - subtracts 1 from reps goal
@@ -137,12 +152,16 @@ function displayRtn(rtnData) {
       addWgt(actualsObj);
     }
     
+    // cancels the request to post the data
     btnCancel.onactivate = function(evt) {
       showActuals();
       hideCancel();
     }
     
+    // submits actuals to be posted on the backend server
     btnEnd.onactivate = function(evt) {
+      
+      fileMessage();
       
       submitActuals(actualsObj);
 
@@ -157,11 +176,11 @@ function displayRtn(rtnData) {
 
 function submitActuals(actualsObj) {
   let actualsData = JSON.stringify(actualsObj);
+  // the actuals must be sent over is small chunks
   if (messaging.peerSocket.bufferedAmount < 512) {
     // Send data only while the buffer contains less than 128 bytes 
     if (counter < actualsData.length) {
       let actualsStr = actualsData.substring(counter, counter + 512);
-      console.log("data " + actualsStr);
       if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
         counter += 512;
         messaging.peerSocket.send(actualsStr);
@@ -188,6 +207,7 @@ function initActuals(actualsObj) {
         actualsObj.actuals[k] = {
           exerciseName: actualsObj.exercises[i].exerciseName,
           setNum: n,
+          orderNum: actualsObj.exercises[i].orderNum,
           sets: actualsObj.exercises[i].sets,
           actualReps: actualsObj.exercises[i].reps,
           actualWgt: actualsObj.exercises[i].weight,
@@ -218,12 +238,14 @@ function prevExercise(actualsObj) {
     } 
 }
 
+// increases rep count
 function addReps(actualsObj) {
     console.log("Plus Reps!");
     actualsObj.actuals[actualsObj.index].actualReps++;
     displayItems(actualsObj);
 }
 
+// decreases rep count
 function subtractReps(actualsObj) {
     console.log("Minus Reps");
     if(actualsObj.actuals[actualsObj.index].actualReps > 0) {
@@ -232,12 +254,14 @@ function subtractReps(actualsObj) {
     displayItems(actualsObj);
 }
 
+// increases weight amount
 function addWgt(actualsObj) {
     console.log("Plus Wgt!");
     actualsObj.actuals[actualsObj.index].actualWgt++;
     displayItems(actualsObj);
 }
 
+// decreases weight amount
 function subtractWgt(actualsObj) {
     console.log("Minus Wgt")
     if(actualsObj.actuals[actualsObj.index].actualWgt > 0) {
@@ -246,8 +270,8 @@ function subtractWgt(actualsObj) {
     displayItems(actualsObj);
 }
 
+// displays text items
 function displayItems(actualsObj) {
-    // display text items
     let exerciseList = document.getElementById("exercise-list");
     let repsGoal = document.getElementById("reps-goal");
     let wgtGoal = document.getElementById("wgt-goal");
@@ -262,6 +286,7 @@ function displayItems(actualsObj) {
     setsLbl.text = actualsObj.actuals[actualsObj.index].setNum + " / " + actualsObj.actuals[actualsObj.index].sets;
 }
 
+// hides the text items
 function hideActuals() {
     let exerciseList = document.getElementById("exercise-list");
     let repsGoal = document.getElementById("reps-goal");
@@ -291,13 +316,27 @@ function hideActuals() {
     btnWgtPlus.style.display = "none";
 }
 
+// hides the cancel / post screen
 function hideCancel() {
     let btnCancel = document.getElementById("btn-cancel");
     let btnEnd = document.getElementById("btn-end");
+    let postMsg = document.getElementById("post-msg");
+    let postMsg2 = document.getElementById("post-msg2");
     btnCancel.style.display = "none";
     btnEnd.style.display = "none";
+    postMsg.style.display = "none";
+    postMsg2.style.display = "none";
 }
 
+// message displayed when workout data is being posted
+function fileMessage() {
+    hideCancel();
+    let postMsg = document.getElementById("post-msg");
+    postMsg.style.display = "inline";
+    postMsg.text = "posting data..."; 
+}
+
+// diplay the actuals info on screen
 function showActuals() {
     let exerciseList = document.getElementById("exercise-list");
     let repsGoal = document.getElementById("reps-goal");
@@ -326,6 +365,7 @@ function showActuals() {
     btnWgtMinus.style.display = "inline";
     btnWgtPlus.style.display = "inline";
 }
+
 
 
 
