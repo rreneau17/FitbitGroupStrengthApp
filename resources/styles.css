@@ -12,9 +12,9 @@
 }
 
 #exercise-list {
-  font-size: 40;
+  font-size: 30;
   font-family: System-Bold;
-  text-length: 15;
+  text-length: 20;
   x: 25;
   y: 35;
   fill: red;
@@ -63,6 +63,22 @@
   text-length: 10;
   x: 50%;
   y: 225;
+  fill: white;
+}
+
+#post-msg {
+  font-size: 35;
+  text-length: 25;
+  x: 25;
+  y: 50;
+  fill: white;
+}
+
+#post-msg2 {
+  font-size: 35;
+  text-length: 25;
+  x: 25;
+  y: 85;
   fill: white;
 }
 

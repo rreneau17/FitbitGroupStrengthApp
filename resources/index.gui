@@ -1,4 +1,5 @@
 <svg class="background">
+  <!-- WORKOUT DETAILS -->
   <text id="exercise-list" />
   <text id="troubleshooting" />
   <text id="reps-goal" />
@@ -6,6 +7,8 @@
   <text id="wgt-label" />
   <text id="reps-label" />
   <text id="sets-label" />
+  <text id="post-msg" />
+  <text id="post-msg2" />
   <!-- TOP RIGHT -->
   <use id="btn-tr" href="#combo-button-upper-right" fill="fb-red">
     <set href="combo-button-icon" attributeName="href" to="check_flag.png"/>
@@ -49,10 +52,12 @@
     <set href="#text" attributeName="y" to="20" />
     <set href="#text" attributeName="x" to="0" />
   </use>
+  <!-- CANCEL BUTTON -->
   <use id="btn-cancel" href="#square-button" y="135" width="165" fill="fb-white">
     <set href="#text" attributeName="text-buffer" to="CANCEL" />
   </use>
+  <!-- END BUTTON -->
   <use id="btn-end" href="#square-button" y="135" x="50%+10" width="165" fill="fb-red">
-    <set href="#text" attributeName="text-buffer" to="END" />
+    <set href="#text" attributeName="text-buffer" to="POST" />
   </use>
 </svg>
