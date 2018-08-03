@@ -1,13 +1,16 @@
+// index.js - runs on companion (mobile phone) device
+
 var messaging = require('messaging');
 import { url } from './config.js';
 import { outbox } from "file-transfer";
 
 let destFilename = "activeRtn.txt";
 
+// get request to backend server to retrieve the active routine
 function queryRoutine() {
   fetch(url)     
   .then(function (response) {
-      // We need an arrayBuffer of the file contents
+      // We need an arrayBuffer of the streamed file contents
       return response.arrayBuffer();
     }).then(function (data) {
         // Queue the file for transfer
@@ -19,11 +22,12 @@ function queryRoutine() {
         throw new Error("Failed to queue '" + destFilename + "'. Error: " + error);
       });
     }).catch(function (error) {
-      // Log the error
+      // Log error with streaming the file contents
       console.log("Failure: " + error);
     });
 }
-  
+
+// posts the actuals workout data to the backend server
 function addWorkout(actualsData) {
     console.log('posting data...');
     fetch(url, {
@@ -37,7 +41,7 @@ function addWorkout(actualsData) {
     .then( (response) => { 
         console.log('Posted items.');
         if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-        // Send a command to the app
+        // Send a command to the app to exit the program
           messaging.peerSocket.send({
             command: 'exitProg'
           });
@@ -84,7 +88,10 @@ messaging.peerSocket.onmessage = function(evt) {
   if (evt.data && evt.data.command == "sendActuals") {
     // The device requested to submit actuals
     console.log('Companion received submit request!');
+    console.log(actualsData);
+    // extracts [object Object] from data file
     let newActuals = actualsData.replace(/\[object Object\]/gi, '');
+    // console.log(newActuals);
     addWorkout(newActuals);
   }
 }

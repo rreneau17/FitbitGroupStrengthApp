@@ -18,9 +18,9 @@ let counter = 0;
 hideActuals();
 hideCancel();
 
+// sends message to the companion device to retrieve the routine data
 function fetchRoutine() {
     if (messaging.peerSocket.readyState === messaging.peerSocket.OPEN) {
-      // Send a command to the companion
       messaging.peerSocket.send({
         command: 'getRoutine'
       });
@@ -30,10 +30,9 @@ function fetchRoutine() {
 // Listen for onopen event
 messaging.peerSocket.onopen = function () {
     fetchRoutine();
-    // txtLabel.text = 'Hello World!'
 };
 
-// Listen for message from the companion (mobile phone) that workout was posted
+// Listen for message from the companion (mobile phone) that workout was posted, then exit program
 messaging.peerSocket.onmessage = function(evt) {
   if (evt.data && evt.data.command == "exitProg") {
     console.log('Companion received request to exit program!');
@@ -50,8 +49,6 @@ messaging.peerSocket.onerror = function(err) {
   console.log("Connection error: " + err.code + " - " + err.message);
 }
 
-
-
 // Event occurs when new routine file(s) are received
 inbox.onnewfile = () => {
   console.log("New file!");
@@ -62,7 +59,6 @@ inbox.onnewfile = () => {
     if (fileName) {
       console.log(`Received File: <${fileName}>`);
       let rtnData = fs.readFileSync(fileName, "utf-8");
-      // statusText.text = `Received file`;
       displayRtn(rtnData);
     }
   } while (fileName);  
@@ -197,7 +193,6 @@ function submitActuals(actualsObj) {
     }
   }  
 }
-
 
 // intializes actuals array 
 function initActuals(actualsObj) {
